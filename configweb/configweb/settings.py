@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-r*mt2_-y9(&5dz=1hc^qu=qt1^uxbj*heiq^$)bih^$7z_x*u!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['snapexpense-njd2.onrender.com']
 
 
 # Application definition
