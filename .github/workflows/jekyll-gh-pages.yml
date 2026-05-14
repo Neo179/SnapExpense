@@ -1,0 +1,45 @@
+name: Django CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Migrations
+      run: |
+        python configweb/manage.py migrate
+
+    - name: Run Tests
+      run: |
+        python configweb/manage.py test configweb/expenses
+
+    - name: Check Static Files
+      run: |
+        python configweb/manage.py collectstatic --noinput
+
+  # Optional: Deployment step (Example for Render)
+  # To use this, you'll need to set RENDER_DEPLOY_HOOK in your GitHub repository secrets
+  # deploy:
+  #   needs: build-and-test
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Trigger Deployment
+  #       run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
